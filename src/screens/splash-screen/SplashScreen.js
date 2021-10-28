@@ -9,7 +9,7 @@ export default function SplashScreen({navigation}) {
   useEffect(() => {
     setTimeout(() => {
       init();
-    }, 5000);
+    }, 1000);
   }, []);
   return (
     <View>
