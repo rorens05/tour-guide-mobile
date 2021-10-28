@@ -2,8 +2,7 @@ import React from 'react';
 import * as eva from '@eva-design/eva';
 import {ApplicationProvider, IconRegistry} from '@ui-kitten/components';
 import {EvaIconsPack} from '@ui-kitten/eva-icons';
-import Routes from './src/Routes/Routes';
-import {Text} from 'react-native';
+import Routes from './src/routes/Routes';
 
 const App = () => (
   <>
