@@ -3,11 +3,12 @@ import * as eva from '@eva-design/eva';
 import {ApplicationProvider, IconRegistry} from '@ui-kitten/components';
 import {EvaIconsPack} from '@ui-kitten/eva-icons';
 import Routes from './src/routes/Routes';
+import theme from './theme';
 
 const App = () => (
   <>
     <IconRegistry icons={EvaIconsPack} />
-    <ApplicationProvider {...eva} theme={eva.light}>
+    <ApplicationProvider {...eva} theme={{...eva.dark, ...theme}}>
       <Routes />
     </ApplicationProvider>
   </>

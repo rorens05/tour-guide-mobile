@@ -5,11 +5,17 @@ import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from '../screens/splash-screen/SplashScreen';
 import Login from '../screens/login/Login';
 import Registration from '../screens/registration/Registration';
-import Dashboard from '../screens/dashboard/Dashboard';
 import SideMenu from '../components/sidemenu/SideMenu';
+import HomeTabNavigator from './components/HomeTabNavigator';
+import CreateTransactions from '../screens/create_transaction/CreateTransaction';
+import Accounts from '../screens/accounts/Accounts';
+import Transfers from '../screens/transfers/Transfers';
+import Categories from '../screens/categories/Categories';
+import Tags from '../screens/tags/Tags';
+import Settings from '../screens/settings/Settings';
+import {DefaultTheme, DarkTheme} from '@react-navigation/native';
 
 const {Navigator, Screen} = createStackNavigator();
-
 const Drawer = createDrawerNavigator();
 
 const HomeDrawer = () => {
@@ -20,7 +26,7 @@ const HomeDrawer = () => {
       }}
       initialRouteName="Home"
       drawerContent={props => <SideMenu {...props} />}>
-      <Drawer.Screen name="Home" component={Dashboard} />
+      <Drawer.Screen name="Home" component={HomeTabNavigator} />
     </Drawer.Navigator>
   );
 };
@@ -34,11 +40,17 @@ const MainNavigator = () => (
     <Screen name="Login" component={Login} />
     <Screen name="Registration" component={Registration} />
     <Screen name="Dashboard" component={HomeDrawer} />
+    <Screen name="CreateTransaction" component={CreateTransactions} />
+    <Screen name="Accounts" component={Accounts} />
+    <Screen name="Transfers" component={Transfers} />
+    <Screen name="Categories" component={Categories} />
+    <Screen name="Tags" component={Tags} />
+    <Screen name="Settings" component={Settings} />
   </Navigator>
 );
 
 const Routes = () => (
-  <NavigationContainer>
+  <NavigationContainer theme={DarkTheme}>
     <MainNavigator />
   </NavigationContainer>
 );

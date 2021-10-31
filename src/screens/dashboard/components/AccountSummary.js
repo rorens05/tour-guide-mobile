@@ -1,18 +1,20 @@
+import {NavigationContext} from '@react-navigation/core';
 import {Icon, Text} from '@ui-kitten/components';
-import React from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import COLOR from '../../../constants/Colors';
 import STYLES from '../../../constants/Styles';
 
 export default function AccountSummary() {
+  const navigation = useContext(NavigationContext);
   return (
     <View style={{marginHorizontal: 16, marginBottom: 28}}>
       <Text category="label">Account</Text>
       <TouchableOpacity
         style={STYLES.shadow}
         activeOpacity={0.9}
-        onPress={() => alert('View all accounts')}>
+        onPress={() => navigation.navigate('Accounts')}>
         <View style={[styles.accountContainer]}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <View style={{flex: 1}}>

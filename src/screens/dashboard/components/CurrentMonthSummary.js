@@ -1,7 +1,8 @@
-import {Text} from '@ui-kitten/components';
+import {Layout, Text} from '@ui-kitten/components';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import COLOR from '../../../constants/Colors';
 import STYLES from '../../../constants/Styles';
 
 export default function CurrentMonthSummary() {
@@ -20,30 +21,42 @@ export default function CurrentMonthSummary() {
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}>
-        <View style={styles.card}>
+        <Layout level="2" style={styles.card}>
           <View style={styles.summaryValue}>
-            <FontAwesomeIcon
-              name="money"
-              style={[styles.icons, {color: 'blue'}]}
-            />
-            <Text style={{color: 'blue'}} category="label">
+            <View
+              style={[
+                styles.iconContainer,
+                {backgroundColor: COLOR.primaryColor},
+              ]}>
+              <FontAwesomeIcon
+                name="money"
+                style={[styles.icons, {color: 'white'}]}
+              />
+            </View>
+            <Text style={{color: COLOR.primaryColor}} category="label">
               PHP 342,028.81
             </Text>
           </View>
           <Text style={{fontSize: 11, textAlign: 'right'}}>Total income</Text>
-        </View>
-        <View style={styles.card}>
+        </Layout>
+        <Layout level="2" style={styles.card}>
           <View style={styles.summaryValue}>
-            <FontAwesomeIcon
-              name="shopping-bag"
-              style={[styles.icons, {color: 'red'}]}
-            />
-            <Text style={{color: 'red'}} category="label">
+            <View
+              style={[
+                styles.iconContainer,
+                {backgroundColor: COLOR.secondaryColor},
+              ]}>
+              <FontAwesomeIcon
+                name="shopping-bag"
+                style={[styles.icons, {color: 'white'}]}
+              />
+            </View>
+            <Text style={{color: COLOR.secondaryColor}} category="label">
               PHP 34,121.94
             </Text>
           </View>
           <Text style={{fontSize: 11, textAlign: 'right'}}>Total expenses</Text>
-        </View>
+        </Layout>
       </View>
     </View>
   );
@@ -55,11 +68,17 @@ const styles = StyleSheet.create({
     width: '48%',
     borderRadius: 4,
     ...STYLES.shadow,
-    backgroundColor: 'white',
   },
   icons: {
-    fontSize: 20,
+    fontSize: 16,
     color: 'blue',
+  },
+  iconContainer: {
+    borderRadius: 100,
+    width: 32,
+    height: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   summaryValue: {
     flexDirection: 'row',

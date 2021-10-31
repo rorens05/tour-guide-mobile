@@ -15,6 +15,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import COLOR from '../../constants/Colors';
 
 const BackIcon = props => <Icon {...props} name="arrow-back" />;
+const ProfileIcon = props => <Icon {...props} name="options-2-outline" />;
 const MenuIcon = props => <Icon {...props} name="menu-2-outline" />;
 
 export default function MainContainer({children, backIcon = true, title}) {
@@ -52,6 +53,15 @@ export default function MainContainer({children, backIcon = true, title}) {
     return null;
   };
 
+  const ProfileAction = () => {
+    return (
+      <TopNavigationAction
+        icon={ProfileIcon}
+        onPress={() => navigation.navigate('Settings')}
+      />
+    );
+  };
+
   return (
     <SafeAreaView style={{flex: 1}}>
       {title && (
@@ -59,11 +69,11 @@ export default function MainContainer({children, backIcon = true, title}) {
           title={MenuTitle}
           alignment=""
           accessoryLeft={BackAction}
-          accessoryRight={BackAction}
+          accessoryRight={ProfileAction}
         />
       )}
       <Divider />
-      <Layout level="1" style={{flex: 1, paddingVertical: 16}}>
+      <Layout level="1" style={{flex: 1, paddingTop: 16}}>
         {children}
       </Layout>
     </SafeAreaView>
