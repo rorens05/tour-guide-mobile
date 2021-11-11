@@ -50,7 +50,7 @@ const MainNavigator = () => (
 );
 
 const Routes = () => (
-  <NavigationContainer theme={DarkTheme}>
+  <NavigationContainer theme={DefaultTheme}>
     <MainNavigator />
   </NavigationContainer>
 );
