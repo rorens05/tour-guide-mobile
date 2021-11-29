@@ -14,6 +14,7 @@ import Categories from '../screens/categories/Categories';
 import Tags from '../screens/tags/Tags';
 import Settings from '../screens/settings/Settings';
 import {DefaultTheme, DarkTheme} from '@react-navigation/native';
+import ProductInformation from '../screens/ProductInformation/ProductInformation';
 
 const {Navigator, Screen} = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -46,6 +47,7 @@ const MainNavigator = () => (
     <Screen name="Categories" component={Categories} />
     <Screen name="Tags" component={Tags} />
     <Screen name="Settings" component={Settings} />
+    <Screen name="ProductInformation" component={ProductInformation} />
   </Navigator>
 );
 

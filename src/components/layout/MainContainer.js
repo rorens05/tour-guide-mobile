@@ -36,7 +36,7 @@ export default function MainContainer({children, backIcon = true, title}) {
           activeOpacity={0.9}>
           <Avatar
             style={{marginRight: 8}}
-            source={require('../assets/images/icon.png')}
+            source={require('../../assets/images/logo.png')}
           />
         </TouchableOpacity>
       )}
@@ -66,14 +66,14 @@ export default function MainContainer({children, backIcon = true, title}) {
     <SafeAreaView style={{flex: 1}}>
       {title && (
         <TopNavigation
+          style={{backgroundColor: '#E9E6E1'}}
           title={MenuTitle}
           alignment=""
           accessoryLeft={BackAction}
-          accessoryRight={ProfileAction}
+          // accessoryRight={ProfileAction}
         />
       )}
-      <Divider />
-      <Layout level="1" style={{flex: 1, paddingTop: 16}}>
+      <Layout level="1" style={{flex: 1, backgroundColor: '#E9E6E1'}}>
         {children}
       </Layout>
     </SafeAreaView>

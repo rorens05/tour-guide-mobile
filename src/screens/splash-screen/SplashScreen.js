@@ -1,7 +1,8 @@
 import React, {useContext, useEffect} from 'react';
-import {Image, Text, View} from 'react-native';
+import {Dimensions, Image, Text, View} from 'react-native';
 import Auth from '../../api/Auth';
 import {UserContext} from '../../context/UserContext';
+const {width, height} = Dimensions.get('window');
 
 export default function SplashScreen({navigation}) {
   const userContext = useContext(UserContext);
@@ -28,8 +29,12 @@ export default function SplashScreen({navigation}) {
   }, []);
 
   return (
-    <View>
-      <Text>Testing</Text>
+    <View style={{width, height, backgroundColor: 'red'}}>
+      <Image
+        source={require('../../assets/images/splash.png')}
+        resizeMode="cover"
+        style={{width, height}}
+      />
     </View>
   );
 }

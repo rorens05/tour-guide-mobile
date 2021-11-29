@@ -8,7 +8,7 @@ export default function Stats({navigation}) {
   return (
     <MainContainer>
       <Text style={styles.text} category="h3">
-        Stats
+        Orders
       </Text>
     </MainContainer>
   );

@@ -5,6 +5,7 @@ import Transactions from '../../screens/transactions/Transactions';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 import COLOR from '../../constants/Colors';
 import Stats from '../../screens/stats/stats';
+import Settings from '../../screens/settings/Settings';
 
 const Tab = createBottomTabNavigator();
 const HomeTabNavigator = () => {
@@ -15,14 +16,17 @@ const HomeTabNavigator = () => {
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
           switch (route.name) {
-            case 'Dashboard':
-              iconName = 'forumbee';
+            case 'Home':
+              iconName = 'home';
               break;
-            case 'Transactions':
-              iconName = 'list-alt';
+            case 'Cart':
+              iconName = 'shopping-cart';
               break;
-            case 'Stats':
-              iconName = 'chart-pie';
+            case 'Orders':
+              iconName = 'archive';
+              break;
+            case 'Profile':
+              iconName = 'user-circle';
               break;
             default:
               break;
@@ -33,9 +37,10 @@ const HomeTabNavigator = () => {
         tabBarActiveTintColor: COLOR.primaryColor,
         tabBarInactiveTintColor: 'gray',
       })}>
-      <Tab.Screen name="Dashboard" component={Dashboard} />
-      <Tab.Screen name="Transactions" component={Transactions} />
-      <Tab.Screen name="Stats" component={Stats} />
+      <Tab.Screen name="Home" component={Dashboard} />
+      <Tab.Screen name="Cart" component={Transactions} />
+      <Tab.Screen name="Orders" component={Stats} />
+      <Tab.Screen name="Profile" component={Settings} />
     </Tab.Navigator>
   );
 };
