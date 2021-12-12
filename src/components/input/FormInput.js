@@ -13,6 +13,7 @@ export const FormInput = ({
   caption,
   style,
   icon,
+  keyboardType,
 }) => {
   const [secureTextEntry, setSecureTextEntry] = React.useState(true);
 
@@ -39,6 +40,7 @@ export const FormInput = ({
 
   return (
     <Input
+      keyboardType={keyboardType}
       style={[{marginBottom: 0}, {...style}]}
       value={value}
       label={label}

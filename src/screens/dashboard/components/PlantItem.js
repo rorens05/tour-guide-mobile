@@ -3,15 +3,17 @@ import React, {useContext} from 'react';
 import {Dimensions, Image, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import COLOR from '../../../constants/Colors';
+import URLs from '../../../constants/URLs';
+import {formatAPIImage, formatCurrency} from '../../../utils/formatter';
 const {width, height} = Dimensions.get('window');
 
-export default function PlantItem() {
+export default function PlantItem({item}) {
   const navigation = useContext(NavigationContext);
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('ProductInformation')}
+      onPress={() => navigation.navigate('ProductInformation', {id: item.id})}
       activeOpacity={0.4}
-      style={{width: width * 0.4, marginTop: 20}}>
+      style={{width: width * 0.4, marginTop: 30}}>
       <View
         style={{
           justifyContent: 'center',
@@ -21,12 +23,12 @@ export default function PlantItem() {
           style={{
             width: 130,
             height: 130,
-            borderRadius: 100,
+            // borderRadius: 100,
             overflow: 'hidden',
             backgroundColor: 'white',
           }}>
           <Image
-            source={require('../../../assets/images/planttest.png')}
+            source={formatAPIImage(item.image_path)}
             style={{width: 130, height: 130}}
           />
         </View>
@@ -38,7 +40,7 @@ export default function PlantItem() {
             color: COLOR.primaryColor,
             marginTop: 8,
           }}>
-          Silver Queen Plant
+          {item.name}
         </Text>
         <Text
           style={{
@@ -46,7 +48,7 @@ export default function PlantItem() {
             color: COLOR.primaryColor,
             fontWeight: 'bold',
           }}>
-          800.00 php
+          {formatCurrency(item.price)}
         </Text>
       </View>
     </TouchableOpacity>
