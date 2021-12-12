@@ -15,6 +15,8 @@ import Tags from '../screens/tags/Tags';
 import Settings from '../screens/settings/Settings';
 import {DefaultTheme, DarkTheme} from '@react-navigation/native';
 import ProductInformation from '../screens/ProductInformation/ProductInformation';
+import OrderInformation from '../screens/order_information/OrderInformation';
+import OrderHistoryInformation from '../screens/order_history_information/OrderHistoryInformation';
 
 const {Navigator, Screen} = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -43,11 +45,16 @@ const MainNavigator = () => (
     <Screen name="Dashboard" component={HomeDrawer} />
     <Screen name="CreateTransaction" component={CreateTransactions} />
     <Screen name="Accounts" component={Accounts} />
+    <Screen name="OrderInformation" component={OrderInformation} />
     <Screen name="Transfers" component={Transfers} />
     <Screen name="Categories" component={Categories} />
     <Screen name="Tags" component={Tags} />
     <Screen name="Settings" component={Settings} />
     <Screen name="ProductInformation" component={ProductInformation} />
+    <Screen
+      name="OrderHistoryInformation"
+      component={OrderHistoryInformation}
+    />
   </Navigator>
 );
 

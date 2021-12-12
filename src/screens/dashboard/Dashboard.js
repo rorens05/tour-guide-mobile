@@ -23,7 +23,7 @@ const {width, height} = Dimensions.get('window');
 export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
-
+  const [selectedCategory, setSelectedCategory] = useState('All');
   const getProducts = async () => {
     setLoading(true);
     const response = await new Products().index();
@@ -34,6 +34,11 @@ export default function Dashboard() {
       alert('Something went wrong while fetching all the plants');
     }
     setLoading(false);
+  };
+
+  const filteredProduct = () => {
+    if (selectedCategory == 'All') return products;
+    return products.filter(item => item.category === selectedCategory);
   };
 
   useEffect(() => {
@@ -81,50 +86,85 @@ export default function Dashboard() {
               alignItems: 'center',
               minWidth: width,
             }}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => setSelectedCategory('All')}>
               <Text
                 style={{
-                  color: COLOR.primaryColor,
+                  padding: 4,
+                  borderRadius: 4,
+                  backgroundColor:
+                    selectedCategory == 'All' ? COLOR.primaryColor : '#E9E6E1',
+                  color:
+                    selectedCategory == 'All' ? 'white' : COLOR.primaryColor,
                   fontWeight: 'bold',
                   paddingHorizontal: 15,
                 }}>
                 All
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => setSelectedCategory('Popular')}>
               <Text
                 style={{
-                  color: COLOR.primaryColor,
+                  padding: 4,
+                  borderRadius: 4,
+                  backgroundColor:
+                    selectedCategory == 'Popular'
+                      ? COLOR.primaryColor
+                      : '#E9E6E1',
+                  color:
+                    selectedCategory == 'Popular'
+                      ? 'white'
+                      : COLOR.primaryColor,
                   fontWeight: 'bold',
                   paddingHorizontal: 15,
                 }}>
                 Popular
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setSelectedCategory('New Arrivals')}>
               <Text
                 style={{
-                  color: COLOR.primaryColor,
+                  padding: 4,
+                  borderRadius: 4,
+                  backgroundColor:
+                    selectedCategory == 'New Arrivals'
+                      ? COLOR.primaryColor
+                      : '#E9E6E1',
+                  color:
+                    selectedCategory == 'New Arrivals'
+                      ? 'white'
+                      : COLOR.primaryColor,
                   fontWeight: 'bold',
                   paddingHorizontal: 15,
                 }}>
                 New Arrivals
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setSelectedCategory('Best Sellers')}>
               <Text
                 style={{
-                  color: COLOR.primaryColor,
+                  padding: 4,
+                  borderRadius: 4,
+                  backgroundColor:
+                    selectedCategory == 'Best Sellers'
+                      ? COLOR.primaryColor
+                      : '#E9E6E1',
+                  color:
+                    selectedCategory == 'Best Sellers'
+                      ? 'white'
+                      : COLOR.primaryColor,
                   fontWeight: 'bold',
                   paddingHorizontal: 15,
                 }}>
-                Best Seller
+                Best Sellers
               </Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
         <View style={{marginBottom: 40}}>
-          {chunk(products, 2).map((row, index) => (
+          {filteredProduct().length == 0 && <Text>No result found.</Text>}
+          {chunk(filteredProduct(), 2).map((row, index) => (
             <View
               key={index}
               style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>

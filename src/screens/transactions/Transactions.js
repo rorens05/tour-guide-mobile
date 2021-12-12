@@ -38,6 +38,12 @@ export default function Transactions() {
     setLoading(false);
   };
 
+  const totalPrice = () => {
+    return carts.reduce((total, item) => {
+      return total + (item.quantity || 0) * (item?.product?.price || 0);
+    }, 0);
+  };
+
   useEffect(() => {
     getCarts();
   }, []);
@@ -47,7 +53,7 @@ export default function Transactions() {
   }, [isFocused]);
 
   return (
-    <MainContainer title="Cart">
+    <MainContainer title="Cart" backIcon={false}>
       <View style={{flex: 1}}>
         <ScrollView
           refreshControl={
@@ -117,16 +123,23 @@ export default function Transactions() {
       </View>
       <View
         style={{
-          backgroundColor: COLOR.primaryColor,
+          backgroundColor:
+            carts.length == 0 || loading ? 'gray' : COLOR.primaryColor,
           flexDirection: 'row',
           padding: 12,
           justifyContent: 'flex-end',
           alignItems: 'center',
         }}>
         <Text style={{color: 'white', marginRight: 12}}>
-          Total Price: 500 php
+          Total Price: {totalPrice()?.toFixed(2)} PHP
         </Text>
-        <TouchableOpacity>
+        <TouchableOpacity
+          disabled={carts.length == 0 || loading}
+          onPress={() => {
+            if (carts.length > 0 && !loading) {
+              navigation.navigate('OrderInformation', {carts});
+            }
+          }}>
           <Text
             style={{
               color: 'white',

@@ -8,3 +8,8 @@ export const formatAPIImage = image => {
   }
   return require('../assets/images/noimage.jpeg');
 };
+
+export const formatDate = dateString => {
+  const date = new Date('2021-12-12T15:40:04.742+08:00');
+  return date.toDateString();
+};

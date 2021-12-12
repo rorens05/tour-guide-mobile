@@ -4,17 +4,18 @@ import {Icon, Input, Text} from '@ui-kitten/components';
 
 const AlertIcon = props => <Icon {...props} name="alert-circle-outline" />;
 
-export const FormInput = ({
-  onChangeText = () => {},
-  value,
-  type,
-  placeholder,
-  label,
-  caption,
-  style,
-  icon,
-  keyboardType,
-}) => {
+export const FormInput = props => {
+  const {
+    onChangeText = () => {},
+    value,
+    type,
+    placeholder,
+    label,
+    caption,
+    style,
+    icon,
+    keyboardType,
+  } = props;
   const [secureTextEntry, setSecureTextEntry] = React.useState(true);
 
   const toggleSecureEntry = () => {
@@ -40,6 +41,7 @@ export const FormInput = ({
 
   return (
     <Input
+      {...props}
       keyboardType={keyboardType}
       style={[{marginBottom: 0}, {...style}]}
       value={value}

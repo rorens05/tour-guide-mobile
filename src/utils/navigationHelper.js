@@ -1,6 +1,7 @@
 export const getParams = navigation => {
   if (navigation) {
     const {index, routes} = navigation.getState();
-    return routes[index].params;
+    console.log('params', index, routes);
+    return routes[index].params || {};
   }
 };
