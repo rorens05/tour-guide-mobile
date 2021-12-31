@@ -73,7 +73,7 @@ export default function OrderHistoryInformation() {
                 Landmark: {loading ? 'Loading...' : order?.land_mark}
               </Text>
               <Text category="p2" style={{marginBottom: 8}}>
-                Contact Number: {loading ? 'Loading...' : order?.land_mark}
+                Contact Number: {loading ? 'Loading...' : order?.contact_number}
               </Text>
               <Text category="p2" style={{marginBottom: 8}}>
                 Ordered at:{' '}

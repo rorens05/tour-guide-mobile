@@ -41,16 +41,7 @@ export default function Settings({navigation}) {
             }}>{`${user?.email}`}</Text>
         </View>
         <Divider />
-        <View style={{flexDirection: 'row', padding: 8}}>
-          <Text>Gender</Text>
-          <Text
-            style={{
-              fontWeight: 'bold',
-              flex: 1,
-              textAlign: 'right',
-            }}>{`${user?.gender}`}</Text>
-        </View>
-        <Divider />
+
         <View style={{flexDirection: 'row', padding: 8}}>
           <Text>Contact Number</Text>
           <Text
