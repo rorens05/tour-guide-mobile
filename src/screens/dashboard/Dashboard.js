@@ -10,74 +10,46 @@ import {
   ScrollView,
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {formatAPIImage} from '../../utils/formatter';
 import MainContainer from '../../components/layout/MainContainer';
 import COLOR from '../../constants/Colors';
 import AccountSummary from './components/AccountSummary';
 import HomeOptions from './components/HomeOptions';
 import CurrentMonthSummary from './components/CurrentMonthSummary';
-import PlantItem from './components/PlantItem';
 import Products from '../../api/Products';
+import PlacesAPI from '../../api/PlacesAPI';
 
 const {width, height} = Dimensions.get('window');
 
-export default function Dashboard() {
+export default function Dashboard({navigation}) {
   const [loading, setLoading] = useState(true);
-  const [products, setProducts] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const getProducts = async () => {
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const getPlaceCategories = async () => {
     setLoading(true);
-    const response = await new Products().index();
-    console.log({response});
+    let response = await new PlacesAPI().index();
     if (response.ok) {
-      setProducts(response.data);
+      setCategories(response.data);
+      if (response.data.length > 0) {
+        setSelectedCategory(response.data[0]);
+      }
     } else {
-      alert('Something went wrong while fetching all the plants');
+      alert('Something went wrong while fetching place categories');
     }
+    console.log({response});
     setLoading(false);
   };
 
-  const filteredProduct = () => {
-    if (selectedCategory == 'All') return products;
-    return products.filter(item => item.category === selectedCategory);
-  };
-
   useEffect(() => {
-    getProducts();
+    getPlaceCategories();
   }, []);
 
   return (
-    <MainContainer title="Home" backIcon={false}>
+    <MainContainer title="Tour Guide App" backIcon={false}>
       <ScrollView
         refreshControl={
-          <RefreshControl refreshing={loading} onRefresh={getProducts} />
+          <RefreshControl refreshing={loading} onRefresh={getPlaceCategories} />
         }>
-        <View
-          style={{
-            backgroundColor: '#668B7A',
-            marginHorizontal: 20,
-            marginVertical: 12,
-            borderRadius: 30,
-            paddingVertical: 20,
-            paddingHorizontal: 20,
-          }}>
-          <Text
-            style={{
-              fontWeight: 'bold',
-              color: 'white',
-              fontSize: 18,
-              marginBottom: 4,
-            }}>
-            Today Tips
-          </Text>
-          <Text
-            style={{
-              color: 'white',
-              marginLeft: 20,
-            }}>
-            Give enough water to maximize plants growth
-          </Text>
-        </View>
-
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           <View
             style={{
@@ -85,97 +57,76 @@ export default function Dashboard() {
               justifyContent: 'center',
               alignItems: 'center',
               minWidth: width,
+              backgroundColor: COLOR.primaryColor,
+              borderTopWidth: 4,
+              borderTopColor: '#0022c9',
             }}>
-            <TouchableOpacity onPress={() => setSelectedCategory('All')}>
-              <Text
-                style={{
-                  padding: 4,
-                  borderRadius: 4,
-                  backgroundColor:
-                    selectedCategory == 'All' ? COLOR.primaryColor : '#E9E6E1',
-                  color:
-                    selectedCategory == 'All' ? 'white' : COLOR.primaryColor,
-                  fontWeight: 'bold',
-                  paddingHorizontal: 15,
-                }}>
-                All
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setSelectedCategory('Popular')}>
-              <Text
-                style={{
-                  padding: 4,
-                  borderRadius: 4,
-                  backgroundColor:
-                    selectedCategory == 'Popular'
-                      ? COLOR.primaryColor
-                      : '#E9E6E1',
-                  color:
-                    selectedCategory == 'Popular'
-                      ? 'white'
-                      : COLOR.primaryColor,
-                  fontWeight: 'bold',
-                  paddingHorizontal: 15,
-                }}>
-                Popular
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setSelectedCategory('New Arrivals')}>
-              <Text
-                style={{
-                  padding: 4,
-                  borderRadius: 4,
-                  backgroundColor:
-                    selectedCategory == 'New Arrivals'
-                      ? COLOR.primaryColor
-                      : '#E9E6E1',
-                  color:
-                    selectedCategory == 'New Arrivals'
-                      ? 'white'
-                      : COLOR.primaryColor,
-                  fontWeight: 'bold',
-                  paddingHorizontal: 15,
-                }}>
-                New Arrivals
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setSelectedCategory('Best Sellers')}>
-              <Text
-                style={{
-                  padding: 4,
-                  borderRadius: 4,
-                  backgroundColor:
-                    selectedCategory == 'Best Sellers'
-                      ? COLOR.primaryColor
-                      : '#E9E6E1',
-                  color:
-                    selectedCategory == 'Best Sellers'
-                      ? 'white'
-                      : COLOR.primaryColor,
-                  fontWeight: 'bold',
-                  paddingHorizontal: 15,
-                }}>
-                Best Sellers
-              </Text>
-            </TouchableOpacity>
+            {categories.map((category, index) => {
+              return (
+                <TouchableOpacity
+                  onPress={() => setSelectedCategory(category)}
+                  key={index}>
+                  <Text
+                    style={{
+                      padding: 8,
+                      backgroundColor: COLOR.primaryColor,
+                      color: 'white',
+                      fontWeight: 'bold',
+                      paddingHorizontal: 15,
+                      borderBottomWidth: 4,
+                      borderBottomColor:
+                        selectedCategory === category
+                          ? '#f542f2'
+                          : COLOR.primaryColor,
+                    }}>
+                    {category.name}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
           </View>
         </ScrollView>
-        <View style={{marginBottom: 40}}>
-          {filteredProduct().length == 0 && <Text>No result found.</Text>}
-          {chunk(filteredProduct(), 2).map((row, index) => (
-            <View
-              key={index}
-              style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-              {row.map((item, index) => {
-                return <PlantItem key={index} item={item} />;
-              })}
-              {row.length == 1 && (
-                <View style={{width: width * 0.4, marginTop: 20}} />
-              )}
-            </View>
-          ))}
+        <View>
+          {selectedCategory && selectedCategory.places.length == 0 && (
+            <Text
+              style={{fontWeight: 'bold', marginTop: 12, textAlign: 'center'}}>
+              No Places Found
+            </Text>
+          )}
+          {selectedCategory &&
+            selectedCategory.places.map((place, index) => {
+              return (
+                <TouchableOpacity
+                  key={index}
+                  activeOpacity={0.8}
+                  onPress={() =>
+                    navigation.navigate('ProductInformation', {id: place.id})
+                  }>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      borderBottomColor: 'gray',
+                      borderBottomWidth: 1,
+                      padding: 10,
+                    }}>
+                    <Image
+                      source={formatAPIImage(place.image_path)}
+                      style={{width: 100, height: 100}}
+                    />
+                    <View
+                      style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        paddingHorizontal: 12,
+                      }}>
+                      <Text style={{fontSize: 20, fontWeight: 'bold'}}>
+                        {place.name}
+                      </Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
         </View>
       </ScrollView>
     </MainContainer>

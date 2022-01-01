@@ -53,10 +53,23 @@ export default function Login({navigation}) {
             marginBottom: 50,
             borderRadius: 30,
             overflow: 'hidden',
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+
+            elevation: 5,
           }}>
           <BlurView
             blurType="light"
-            style={{position: 'absolute', width, height}}
+            style={{
+              position: 'absolute',
+              width,
+              height,
+            }}
           />
           <View
             style={{
@@ -120,7 +133,7 @@ export default function Login({navigation}) {
                 onPress={() => navigation.navigate('Registration')}>
                 <Text
                   category="label"
-                  style={{color: 'white', fontSize: 20, marginLeft: 4}}>
+                  style={{color: 'gray', fontSize: 20, marginLeft: 4}}>
                   Create an Account
                 </Text>
               </TouchableOpacity>

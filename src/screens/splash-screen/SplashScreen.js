@@ -29,12 +29,30 @@ export default function SplashScreen({navigation}) {
   }, []);
 
   return (
-    <View style={{width, height, backgroundColor: 'red'}}>
+    <View style={{width, height}}>
       <Image
-        source={require('../../assets/images/splash.png')}
+        source={require('../../assets/images/bg-image.jpg')}
         resizeMode="cover"
         style={{width, height}}
       />
+      <View
+        style={{
+          position: 'absolute',
+          backgroundColor: 'rgba(255,255,255,0.3)',
+          width,
+          height,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <Image
+          source={require('../../assets/images/logo.png')}
+          resizeMode="cover"
+          style={{width: 100, height: 100}}
+        />
+        <Text style={{color: '#19303E', fontWeight: 'bold', fontSize: 26}}>
+          Tour Guide App
+        </Text>
+      </View>
     </View>
   );
 }

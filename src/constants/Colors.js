@@ -1,6 +1,6 @@
 const COLOR = {
-  primaryColor: '#668B7A',
-  secondaryColor: '#668B7A',
+  primaryColor: '#0057BE',
+  secondaryColor: '#0057BE',
 };
 
 export default COLOR;

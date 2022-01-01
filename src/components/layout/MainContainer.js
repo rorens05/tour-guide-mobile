@@ -14,9 +14,27 @@ import {SafeAreaView, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import COLOR from '../../constants/Colors';
 
-const BackIcon = props => <Icon {...props} name="arrow-back" />;
-const ProfileIcon = props => <Icon {...props} name="options-2-outline" />;
-const MenuIcon = props => <Icon {...props} name="menu-2-outline" />;
+const BackIcon = props => (
+  <Icon
+    {...props}
+    name="arrow-back"
+    style={{tintColor: 'white', height: 24, width: 24}}
+  />
+);
+const ProfileIcon = props => (
+  <Icon
+    {...props}
+    name="options-2-outline"
+    style={{tintColor: 'white', height: 24, width: 24}}
+  />
+);
+const MenuIcon = props => (
+  <Icon
+    {...props}
+    name="menu-2-outline"
+    style={{tintColor: 'white', height: 24, width: 24}}
+  />
+);
 
 export default function MainContainer({children, backIcon = true, title}) {
   const navigation = useContext(NavigationContext);
@@ -40,7 +58,10 @@ export default function MainContainer({children, backIcon = true, title}) {
           />
         </TouchableOpacity>
       )}
-      <Text {...props} category="s1">
+      <Text
+        {...props}
+        category="s1"
+        style={{color: 'white', fontWeight: 'bold'}}>
         {title}
       </Text>
     </View>
@@ -66,7 +87,7 @@ export default function MainContainer({children, backIcon = true, title}) {
     <SafeAreaView style={{flex: 1}}>
       {title && (
         <TopNavigation
-          style={{backgroundColor: '#E9E6E1'}}
+          style={{backgroundColor: COLOR.primaryColor}}
           title={MenuTitle}
           alignment=""
           accessoryLeft={BackAction}

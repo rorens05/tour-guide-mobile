@@ -38,8 +38,8 @@ const HomeTabNavigator = () => {
         tabBarInactiveTintColor: 'gray',
       })}>
       <Tab.Screen name="Home" component={Dashboard} />
-      <Tab.Screen name="Cart" component={Transactions} />
-      <Tab.Screen name="Orders" component={Stats} />
+      {/* <Tab.Screen name="Cart" component={Transactions} />
+      <Tab.Screen name="Orders" component={Stats} /> */}
       <Tab.Screen name="Profile" component={Settings} />
     </Tab.Navigator>
   );

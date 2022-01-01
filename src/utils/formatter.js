@@ -4,6 +4,7 @@ export const formatCurrency = value => {
 
 export const formatAPIImage = image => {
   if (image != null) {
+    console.log(URLs.BASE_URL + image);
     return {uri: URLs.BASE_URL + image};
   }
   return require('../assets/images/noimage.jpeg');

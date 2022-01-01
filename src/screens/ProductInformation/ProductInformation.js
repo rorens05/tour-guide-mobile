@@ -1,8 +1,10 @@
 import {NavigationContext} from '@react-navigation/core';
+import {Icon} from '@ui-kitten/components';
 import React, {useContext, useEffect, useState} from 'react';
 import {
   Dimensions,
   Image,
+  Linking,
   RefreshControl,
   ScrollView,
   Text,
@@ -10,109 +12,169 @@ import {
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Carts from '../../api/Carts';
+import PlacesAPI from '../../api/PlacesAPI';
 import Products from '../../api/Products';
 import {FormInput} from '../../components/input/FormInput';
 import MainContainer from '../../components/layout/MainContainer';
 import COLOR from '../../constants/Colors';
-import {formatAPIImage, formatCurrency} from '../../utils/formatter';
+import {
+  formatAPIImage,
+  formatCurrency,
+  formatDate,
+} from '../../utils/formatter';
 import {getParams} from '../../utils/navigationHelper';
+import ActionButton from './components/ActionButton';
+import ProductItem from './components/ProductItem';
+import ReviewItem from './components/ReviewItem';
+import StarRating from './components/StarRating';
 const {width, height} = Dimensions.get('screen');
 export default function ProductInformation() {
   const navigation = useContext(NavigationContext);
 
-  const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [quantity, setQuantity] = useState(1);
+  const [place, setPlace] = useState(null);
   const {id} = getParams(navigation);
 
-  const fetchProduct = async () => {
+  const fetchPlace = async () => {
     setLoading(true);
-    let response = await new Products().show(id);
-    setLoading(false);
+    let response = await new PlacesAPI().place(id);
+    console.log('response', response);
+    console.log({response});
     if (response.ok) {
-      setProduct(response.data);
+      setPlace(response.data);
     } else {
-      alert('Something went wrong while fetching product information');
+      alert('something went wrong while fetching place information');
     }
     setLoading(false);
-  };
-
-  const addToCart = async () => {
-    setLoading(true);
-    let response = await new Carts().create({
-      product_id: id,
-      quantity,
-    });
-    setLoading(false);
-    if (response.ok) {
-      navigation.navigate('Dashboard', {
-        screen: 'Home',
-        params: {screen: 'Cart'},
-      });
-    } else {
-      alert(response.data.join('\n'));
-    }
   };
 
   useEffect(() => {
-    fetchProduct();
+    fetchPlace();
   }, []);
 
+  const openLatLongInGoogleMap = () => {
+    const scheme =
+      Platform.select({
+        ios: 'maps:0,0?q=',
+        android: 'geo:0,0?q=',
+      }) + place.latlong;
+    const latLongUrl = Platform.select({
+      ios: encodeURI(scheme),
+      android: encodeURI(`${scheme}(${place.name})`),
+    });
+    Linking.openURL(latLongUrl);
+  };
+
+  const openPhoneNumber = () => {
+    const phoneNumber = place.contact_number;
+    const phoneNumberUrl = Platform.select({
+      ios: `telprompt:${phoneNumber}`,
+      android: `tel:${phoneNumber}`,
+    });
+    Linking.openURL(phoneNumberUrl);
+  };
+
+  const openWebsite = () => {
+    const website = place.website;
+    const websiteUrl = Platform.select({
+      ios: `${website}`,
+      android: `${website}`,
+    });
+    Linking.openURL(websiteUrl);
+  };
+
   return (
-    <MainContainer title={product?.name || 'Product Information'}>
+    <MainContainer title={place?.name || 'Place Information'}>
       <ScrollView
         refreshControl={
-          <RefreshControl refreshing={loading} onRefresh={fetchProduct} />
+          <RefreshControl refreshing={loading} onRefresh={fetchPlace} />
         }>
-        <View style={{alignItems: 'center'}}>
-          <Image
-            source={formatAPIImage(product?.image_path)}
-            style={{width: '80%', height: 400}}
-          />
-        </View>
-        <View style={{padding: 20}}>
-          <Text
-            style={{
-              fontSize: 20,
-              fontWeight: 'bold',
-              color: 'black',
-              marginBottom: 12,
-            }}>
-            {product?.name || 'Loading'}
-          </Text>
-          <Text style={{color: 'black', fontWeight: 'bold', marginBottom: 8}}>
-            {formatCurrency(product?.price)}
-          </Text>
-          <Text style={{color: 'black', fontWeight: 'bold', marginBottom: 20}}>
-            {product?.description || 'Loading'}
-          </Text>
-          <FormInput
-            label="Quantiy"
-            placeholder="Quantity"
-            value={quantity.toString()}
-            keyboardType="number-pad"
-            onChangeText={text => setQuantity(text)}
-            icon="copy-outline"
-          />
-        </View>
+        {place && (
+          <View style={{backgroundColor: 'white'}}>
+            <Image
+              source={formatAPIImage(place.image_path)}
+              style={{width: '100%', height: 300}}
+            />
+            <View style={{padding: 12}}>
+              <Text style={{fontWeight: 'bold', fontSize: 20, color: 'black'}}>
+                {place.name}
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Text>{`${formatDate(place.created_at)} | `}</Text>
+                <View style={{flex: 1, flexDirection: 'row'}}>
+                  <StarRating
+                    ratings={place.ratings}
+                    review_count={place.review_count}
+                  />
+                  <Text
+                    style={{
+                      marginTop: 0,
+                    }}>{`${place.review_count} reviews`}</Text>
+                </View>
+              </View>
+              <Text style={{marginTop: 12, color: 'black'}}>
+                {place.description}
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                margin: 12,
+                borderTopColor: '#e0e0e0',
+                borderBottomColor: '#e0e0e0',
+                borderTopWidth: 1,
+                borderBottomWidth: 1,
+                paddingVertical: 12,
+              }}>
+              <ActionButton
+                icon="globe-outline"
+                text="Visit Website"
+                onPress={() => openWebsite()}
+              />
+              <ActionButton
+                icon="phone-call-outline"
+                text="Call"
+                onPress={() => openPhoneNumber()}
+              />
+              <ActionButton
+                icon="map-outline"
+                text="View in Map"
+                onPress={() => openLatLongInGoogleMap()}
+              />
+            </View>
+            {place.products && place.products.length > 0 && (
+              <View style={{margin: 12, marginTop: 32}}>
+                <Text
+                  style={{fontWeight: 'bold', fontSize: 18, color: 'black'}}>
+                  Menus
+                </Text>
+                {place.products.map((product, index) => (
+                  <ProductItem product={product} key={index} />
+                ))}
+              </View>
+            )}
+
+            {place.reviews && (
+              <View style={{margin: 12, marginTop: 32}}>
+                <Text
+                  style={{fontWeight: 'bold', fontSize: 18, color: 'black'}}>
+                  Reviews
+                </Text>
+                {place.reviews.length == 0 && (
+                  <Text>Reviews will appear here...</Text>
+                )}
+                {place.reviews.map((review, index) => (
+                  <ReviewItem review={review} key={index} />
+                ))}
+              </View>
+            )}
+          </View>
+        )}
       </ScrollView>
-      <View style={{alignItems: 'center'}}>
-        <TouchableOpacity disabled={loading} onPress={addToCart}>
-          <Text
-            style={{
-              backgroundColor: loading ? 'gray' : COLOR.primaryColor,
-              width: width,
-              color: 'white',
-              // borderRadius: 20,
-              paddingHorizontal: 40,
-              paddingVertical: 16,
-              fontWeight: 'bold',
-              textAlign: 'center',
-            }}>
-            Add to Cart
-          </Text>
-        </TouchableOpacity>
-      </View>
     </MainContainer>
   );
 }
