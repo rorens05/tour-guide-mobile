@@ -24,6 +24,7 @@ import {
 } from '../../utils/formatter';
 import {getParams} from '../../utils/navigationHelper';
 import ActionButton from './components/ActionButton';
+import AddReview from './components/AddReview';
 import ProductItem from './components/ProductItem';
 import ReviewItem from './components/ReviewItem';
 import StarRating from './components/StarRating';
@@ -51,6 +52,18 @@ export default function ProductInformation() {
   useEffect(() => {
     fetchPlace();
   }, []);
+
+  const updateReview = async (content, rating) => {
+    setLoading(true);
+    let response = await new PlacesAPI().updateReview(id, {content, rating});
+    setLoading(false);
+    if (response.ok) {
+      await fetchPlace();
+      alert('Review has been submitted successfully');
+    } else {
+      alert('something went wrong while updating review');
+    }
+  };
 
   const openLatLongInGoogleMap = () => {
     const scheme =
@@ -157,7 +170,11 @@ export default function ProductInformation() {
                 ))}
               </View>
             )}
-
+            <AddReview
+              fetchPlace={fetchPlace}
+              place={place}
+              updateReview={updateReview}
+            />
             {place.reviews && (
               <View style={{margin: 12, marginTop: 32}}>
                 <Text

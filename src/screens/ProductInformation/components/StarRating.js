@@ -1,12 +1,9 @@
 import {Icon} from '@ui-kitten/components';
 import React from 'react';
 import {Text, View} from 'react-native';
+import {generateArrayFromNumber} from '../../../utils/numberGenerator';
 
 export default function StarRating({ratings}) {
-  const generateArrayFromNumber = num => {
-    return [...new Array(num).keys()];
-  };
-
   return (
     <View style={{paddingTop: 2, flexDirection: 'row', marginRight: 12}}>
       {generateArrayFromNumber(5).map((item, index) => {

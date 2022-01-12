@@ -17,6 +17,9 @@ export default function ReviewItem({review}) {
           color: 'black',
         }}>{`${review.user.first_name} ${review.user.last_name}`}</Text>
       <StarRating ratings={review.rating} />
+      <Text style={{marginTop: 4, fontSize: 10}}>
+        {new Date(review.created_at).toDateString()}
+      </Text>
       <Text style={{marginTop: 12}}>{review.content}</Text>
     </View>
   );
